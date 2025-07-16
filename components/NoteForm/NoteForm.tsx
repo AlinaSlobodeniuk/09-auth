@@ -13,7 +13,7 @@ export interface NoteFormValues {
 }
 
 export interface NoteFormProps {
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 const validationSchema = Yup.object().shape({
@@ -30,7 +30,7 @@ const initialValues: NoteFormValues = {
   tag: 'Todo',
 };
 
-export default function NoteForm({ onCancel }: NoteFormProps) {
+export default function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient();
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +38,7 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
-      onCancel();
+      onClose();
     },
     onError: error => {
       setError(error.message || '');
@@ -106,7 +106,7 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
             <button
               type="button"
               className={css.cancelButton}
-              onClick={onCancel}
+              onClick={onClose}
               disabled={isSubmitting}
             >
               Cancel

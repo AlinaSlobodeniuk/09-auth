@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import NoteList from '@/components/NoteList/NoteList';
-import NoteModal from '@/components/NoteModal/NoteModal';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import css from './NotesPage.module.css';
@@ -11,6 +10,8 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchNotes, FetchNotesResponse } from '@/lib/api';
 import Loader from '@/components/Loader/Loader';
 import Error from '@/components/Error/Error';
+import Modal from '@/components/Modal/Modal';
+import NoteForm from '@/components/NoteForm/NoteForm';
 
 interface NotesClientProps {
   initialData: FetchNotesResponse;
@@ -42,6 +43,13 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
     initialData,
   });
 
+    const handleCreateNote = () => {
+    setIsModal(true);
+  };
+  const closeModal = () => {
+    setIsModal(false);
+  };
+
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
@@ -53,11 +61,16 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
             onPageChange={setPage}
           />
         )}
-        <button className={css.button} onClick={() => setIsModal(true)}>
+        <button className={css.button} onClick={handleCreateNote}>
           Create note +
         </button>
       </header>
 
+      {isModal && (
+        <Modal onClose={closeModal}>
+          <NoteForm onClose={closeModal} />
+        </Modal>
+      )}
       {isLoading && <Loader />}
       {isError && (
         <Error message={error?.message || 'An unknown error occurred'} />
@@ -67,7 +80,6 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
       ) : (
         !isLoading && <p>No notes found.</p>
       )}
-      {isModal && <NoteModal onClose={() => setIsModal(false)} />}
     </div>
   );
 }
