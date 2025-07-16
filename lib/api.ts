@@ -24,6 +24,7 @@ export interface FetchNotesParams {
   page?: number;
   perPage?: number;
   search?: string;
+  tag?: string;
 }
 
 export type CreateNoteTodo = {
@@ -32,20 +33,20 @@ export type CreateNoteTodo = {
   tag: Note['tag'];
 };
 
-export const fetchNotes = async (search: string, page: number, perPage: number = 12): Promise<FetchNotesResponse> => {
+export const fetchNotes = async ({
+  search,
+  page = 1,
+  tag,
+}: FetchNotesParams) => {
   const params: FetchNotesParams = {
     page,
-    perPage,
-    search: search || undefined,
+    perPage: 12,
   };
-  const response: AxiosResponse<FetchNotesResponse> = await axiosInstance.get('/notes', { params });
+  if (search) params.search = search;
+  if (tag) params.tag = tag;
+  const response = await axiosInstance.get('/notes', { params });
 
-  const notes = response.data.notes ?? [];
-  const totalPages = response.data.totalPages ?? 1;
-  return {
-    notes,
-    totalPages: totalPages > 0 ? totalPages : 1,
-  };
+  return response.data;
 };
 
 export const fetchNoteById = async (id: number): Promise<Note> => {
@@ -54,11 +55,16 @@ export const fetchNoteById = async (id: number): Promise<Note> => {
 };
 
 export const createNote = async (note: CreateNoteTodo): Promise<Note> => {
-  const response: AxiosResponse<Note> = await axiosInstance.post('/notes', note);
+  const response: AxiosResponse<Note> = await axiosInstance.post(
+    '/notes',
+    note
+  );
   return response.data;
 };
 
 export const deleteNote = async (id: number): Promise<Note> => {
-  const response: AxiosResponse<Note> = await axiosInstance.delete(`/notes/${id}`);
+  const response: AxiosResponse<Note> = await axiosInstance.delete(
+    `/notes/${id}`
+  );
   return response.data;
 };
