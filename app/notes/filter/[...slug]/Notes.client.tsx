@@ -54,7 +54,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
     <div className={css.app}>
       <header className={css.toolbar}>
         <SearchBox value={search} onChange={handleSearchChange} />
-        {data.notes.length && data.totalPages > 1 && (
+        {data && data.totalPages && data.totalPages > 1 && (
           <Pagination
             pageCount={data.totalPages}
             currentPage={page}
@@ -75,11 +75,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
       {isError && (
         <Error message={error?.message || 'An unknown error occurred'} />
       )}
-      {data.notes.length > 0 ? (
-        <NoteList notes={data.notes} />
-      ) : (
-        !isLoading && <p>No notes found.</p>
-      )}
+      {data?.notes?.length ? <NoteList notes={data.notes} /> : null}
     </div>
   );
 }
