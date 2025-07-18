@@ -10,8 +10,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchNotes, FetchNotesResponse } from '@/lib/api';
 import Loader from '@/components/Loader/Loader';
 import Error from '@/components/Error/Error';
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
 import Link from 'next/link';
 
 interface NotesClientProps {
@@ -46,7 +44,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox value={search} onChange={(query: string) => setSearch(search)} />
+        <SearchBox value={search} onChange={handleSearchChange} />
         {data && data.totalPages && data.totalPages > 1 && (
           <Pagination
             pageCount={data.totalPages}

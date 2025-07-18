@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import { NewNoteData, Note, Tag } from '../../types/note';
+import { NewNoteData, Tag } from '../../types/note';
 import css from './NoteForm.module.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createNote } from '../../lib/api';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useNoteDraftStore } from '@/lib/store/noteStore';
 
@@ -19,6 +18,7 @@ export default function NoteForm() {
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
+      clearDraft();
       onClose();
     },
   });
