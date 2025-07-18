@@ -9,7 +9,6 @@ import { useNoteDraftStore } from '@/lib/store/noteStore';
 export default function NoteForm() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [error, setError] = useState<string | null>(null);
   const onClose = () => router.back();
 
   const { draft, setDraft, clearDraft } = useNoteDraftStore();
@@ -19,9 +18,6 @@ export default function NoteForm() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       onClose();
-    },
-    onError: error => {
-      setError(error.message || '');
     },
   });
 
