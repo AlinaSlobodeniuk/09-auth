@@ -12,6 +12,7 @@ import Loader from '@/components/Loader/Loader';
 import Error from '@/components/Error/Error';
 import Modal from '@/components/Modal/Modal';
 import NoteForm from '@/components/NoteForm/NoteForm';
+import Link from 'next/link';
 
 interface NotesClientProps {
   initialData: FetchNotesResponse;
@@ -19,7 +20,6 @@ interface NotesClientProps {
 }
 
 export default function NotesClient({ initialData, tag }: NotesClientProps) {
-  const [isModal, setIsModal] = useState(false);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 400);
@@ -43,17 +43,10 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
     initialData,
   });
 
-    const handleCreateNote = () => {
-    setIsModal(true);
-  };
-  const closeModal = () => {
-    setIsModal(false);
-  };
-
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox value={search} onChange={handleSearchChange} />
+        <SearchBox value={search} onChange={(query: string) => setSearch(search)} />
         {data && data.totalPages && data.totalPages > 1 && (
           <Pagination
             pageCount={data.totalPages}
@@ -61,16 +54,11 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
             onPageChange={setPage}
           />
         )}
-        <button className={css.button} onClick={handleCreateNote}>
+        <Link href={'/notes/action/create'} className={css.button}>
           Create note +
-        </button>
+        </Link>
       </header>
 
-      {isModal && (
-        <Modal onClose={closeModal}>
-          <NoteForm onClose={closeModal} />
-        </Modal>
-      )}
       {isLoading && <Loader />}
       {isError && (
         <Error message={error?.message || 'An unknown error occurred'} />
