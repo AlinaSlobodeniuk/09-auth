@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: FilteredNotesPageProps): Prom
     openGraph: {
       title: `Notes${tag ? ` - ${tag}` : "All Notes"}`,
       description: `Notes filtered by ${tag || "All Notes"}`,
-      url: `https://08-zustand-wine.vercel.app/notes/filter/${slug.join("/")}`,
+      url: `https://09-auth-puce.vercel.app/notes/filter/${slug.join("/")}`,
      
       images: [
         {
