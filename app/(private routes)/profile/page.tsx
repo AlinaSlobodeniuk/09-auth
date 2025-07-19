@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Profile - NoteHub',
     description: 'Profile on NoteHub.',
-    url: `https://http://localhost:3000/Profile`,
+    url: `https://09-auth-puce.vercel.app/Profile`,
     images: [
       {
         url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
