@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import NotesClient from './Notes.client';
-import { fetchNotes } from '@/lib/api';
+import { fetchNotes } from '@/lib/api/clientApi';
 
 interface FilteredNotesPageProps {
   params: Promise<{ slug: string[] }>;
