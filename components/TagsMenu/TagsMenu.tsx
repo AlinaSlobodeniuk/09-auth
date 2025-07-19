@@ -9,7 +9,7 @@ export default function TagsMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggle = () => setIsOpen(!isOpen);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -31,7 +31,7 @@ export default function TagsMenu() {
 
   return (
     <div ref={menuRef} className={css.menuContainer}>
-      <button onClick={toggleMenu} className={css.menuButton}>
+      <button onClick={toggle} className={css.menuButton}>
         Notes ▾
       </button>
       {isOpen && (
@@ -39,7 +39,7 @@ export default function TagsMenu() {
           {tags.map((tag) => (
             <li key={tag} className={css.menuItem}>
               <Link
-                onClick={toggleMenu}
+                onClick={toggle}
                 href={`/notes/filter/${tag}`}
                 className={css.menuLink}
               >
