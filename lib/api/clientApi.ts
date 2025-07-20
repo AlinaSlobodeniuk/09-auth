@@ -6,7 +6,7 @@ import { User } from '@/types/user';
 export type RegisterRequest = {
   email: string;
   password: string;
-  userName: string;
+  username: string;
 };
 
 export type LoginRequest = {
@@ -19,7 +19,7 @@ export type CheckSessionRequest = {
 };
 
 export interface UpdateRequest {
-  userName: string;
+  username: string;
 }
 
 export const fetchNotes = async ({
@@ -40,17 +40,25 @@ export const fetchNotes = async ({
   return response.data;
 };
 
-export const fetchNoteById = async (id: number): Promise<Note> => {
+export const fetchNoteById = async (id: string): Promise<Note> => {
   const response = await nextServer.get<Note>(`/notes/${id}`);
   return response.data;
 };
 
-export const createNote = async (newNote: NewNoteData): Promise<Note> => {
-  const response = await nextServer.post<Note>('/notes', newNote);
+export const createNote = async ({
+  title,
+  content,
+  tag,
+}: NewNoteData): Promise<Note> => {
+  const response = await nextServer.post<Note>('/notes', {
+    title,
+    content,
+    tag,
+  });
   return response.data;
 };
 
-export const deleteNote = async (id: number): Promise<Note> => {
+export const deleteNote = async (id: string): Promise<Note> => {
   const response = await nextServer.delete<Note>(`/notes/${id}`);
   return response.data;
 };
@@ -66,8 +74,8 @@ export const register = async (data: RegisterRequest): Promise<User> => {
 };
 
 export const checkSession = async () => {
-  await nextServer.get('/auth/session');
-
+  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
+  return res;
 };
 
 export const getMe = async (): Promise<User> => {
@@ -80,6 +88,6 @@ export const logout = async (): Promise<void> => {
 };
 
 export const updateMe = async (data: UpdateRequest): Promise<User> => {
-  const res = await nextServer.patch('/users/me', data);
+  const res = await nextServer.patch<User>('/users/me', data);
   return res.data;
 };

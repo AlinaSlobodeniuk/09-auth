@@ -7,11 +7,11 @@ import SearchBox from '@/components/SearchBox/SearchBox';
 import css from './NotesPage.module.css';
 import { useDebounce } from 'use-debounce';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { fetchNotes } from '@/lib/api/clientApi';
-import { FetchNotesResponse } from '@/lib/api/serverApi';
+import { FetchNotesResponse  } from '@/lib/api/serverApi';
 import Loader from '@/components/Loader/Loader';
 import Error from '@/components/Error/Error';
 import Link from 'next/link';
+import { fetchNotes } from '@/lib/api/clientApi';
 
 interface NotesClientProps {
   initialData: FetchNotesResponse;
@@ -33,7 +33,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
     isLoading,
     isError,
     error,
-  } = useQuery<FetchNotesResponse, Error>({
+  } = useQuery({
     queryKey: ['notes', tag, debouncedSearch, page],
     queryFn: () =>
       fetchNotes({ search: debouncedSearch, page: page, tag: tag }),
