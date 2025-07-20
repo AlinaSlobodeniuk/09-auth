@@ -1,6 +1,6 @@
 'use client';
 
-import { checkServerSession, getServerMe, updateServerMe } from '@/lib/api/serverApi';
+import { checkSession, getMe, updateMe } from '@/lib/api/clientApi';
 import css from './EditProfilePage.module.css';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -23,8 +23,8 @@ export default function EditProfilePage() {
     }
     const fetchUser = async () => {
       try {
-        await checkServerSession();
-        const fetchedUser = await getServerMe();
+        await checkSession();
+        const fetchedUser = await getMe();
         if (fetchedUser) {
           setUser(fetchedUser);
           setNewUsername(fetchedUser.username || '');
@@ -44,7 +44,7 @@ export default function EditProfilePage() {
   const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const updatedUser = await updateServerMe({ username: newUsername });
+      const updatedUser = await updateMe({ username: newUsername });
       setUser(updatedUser);
       router.push('/profile');
     } catch (error) {
